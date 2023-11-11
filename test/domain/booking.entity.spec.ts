@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
-import { Booking } from '../../src/domain/booking.entity.js';
 import assert from 'node:assert';
-import { BookingStatus } from '../../src/domain/booking.status.js';
+import { Booking } from '../../src/domain/booking.entity';
+import { BookingStatus } from '../../src/domain/booking.status';
 
 describe('Booking', () => {
   test('schedules a booking', () => {
