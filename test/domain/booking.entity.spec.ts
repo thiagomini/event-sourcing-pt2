@@ -15,5 +15,23 @@ describe('Booking', () => {
     assert.equal(booking.customerId, 'customer-id');
     assert.equal(booking.hotelId, 'hotel-id');
     assert.equal(booking.bookingStatus, BookingStatus.Booked);
+    assert.equal(booking.changes.length, 1);
+  });
+
+  test('pays a booking', () => {
+    // Arrange
+    const aBooking = Booking.schedule({
+      customerId: 'customer-id',
+      hotelId: 'hotel-id',
+      from: new Date('2020-01-01'),
+      to: new Date('2020-01-02'),
+    });
+
+    // Act
+    const paymentDate = new Date();
+    aBooking.confirmPayment(paymentDate);
+
+    assert.ok(aBooking.paid);
+    assert.equal(aBooking.paymentDate, paymentDate);
   });
 });

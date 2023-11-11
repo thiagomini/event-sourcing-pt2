@@ -22,6 +22,15 @@ export const Events = {
   },
 
   BookingPaid: class BookingPaid implements Change {
+    constructor(props: {
+      bookingId: string;
+      paymentDate: Date;
+      occurredOn: Date;
+    }) {
+      Object.assign(this, props);
+    }
+
+    paymentDate: Date;
     bookingId: string;
     occurredOn: Date;
   },

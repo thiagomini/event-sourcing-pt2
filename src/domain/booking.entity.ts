@@ -12,9 +12,12 @@ export type ScheduleCommand = {
 };
 
 export class Booking extends Entity {
+  public readonly id: string;
   public readonly customerId: string;
   public readonly hotelId: string;
   public readonly bookingStatus: BookingStatus;
+  public readonly paid: boolean;
+  public readonly paymentDate: Date;
 
   public readonly from: Date;
   public readonly to: Date;
@@ -25,7 +28,24 @@ export class Booking extends Entity {
         const { occurredOn, ...props } = change;
         this.assign(props);
         break;
+
+      case Events.BookingPaid:
+        this.assign({
+          paid: true,
+          paymentDate: (change as unknown as { paymentDate: Date }).paymentDate,
+        });
+        break;
     }
+  }
+
+  public confirmPayment(paymentDate: Date): void {
+    this.apply(
+      new Events.BookingPaid({
+        bookingId: this.id,
+        paymentDate,
+        occurredOn: new Date(),
+      }),
+    );
   }
 
   public static schedule({
