@@ -1,0 +1,10 @@
+{
+  "name": "event-sourcing-pt2",
+  "version": "1.0.0",
+  "description": "A sample event-sourcing domain using the event store webinar",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Thiago Martins"
+  }
+}
