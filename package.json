@@ -6,5 +6,8 @@
   "license": "MIT",
   "author": {
     "name": "Thiago Martins"
+  },
+  "dependencies": {
+    "typescript": "^5.2.2"
   }
 }
