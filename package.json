@@ -13,7 +13,7 @@
     "yarn": ">= 1.22.19"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "test": "node --import tsx --test test/**/*.spec.ts",
     "format": "prettier --write ."
   },
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
     "tsx": "^4.1.1"
   }
 }
