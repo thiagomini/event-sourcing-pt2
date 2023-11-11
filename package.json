@@ -7,7 +7,17 @@
   "author": {
     "name": "Thiago Martins"
   },
+  "engines": {
+    "node": ">= 20.9.0",
+    "yarn": ">= 1.22.19"
+  },
+  "scripts": {
+    "test": "node --import tsx --test test/*.spec.ts"
+  },
   "dependencies": {
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.1.1"
   }
 }
