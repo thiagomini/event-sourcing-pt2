@@ -1,4 +1,8 @@
-import { BookingStatus } from './booking.status.js';
+import { BookingStatus } from './booking.status';
+import { Change } from './change.interface';
+import { Entity } from './entity';
+import { Events } from './events';
+import { randomUUID } from 'node:crypto';
 
 export type ScheduleCommand = {
   customerId: string;
@@ -7,7 +11,7 @@ export type ScheduleCommand = {
   to: Date;
 };
 
-export class Booking {
+export class Booking extends Entity {
   public readonly customerId: string;
   public readonly hotelId: string;
   public readonly bookingStatus: BookingStatus;
@@ -15,18 +19,13 @@ export class Booking {
   public readonly from: Date;
   public readonly to: Date;
 
-  private constructor(
-    customerId: string,
-    hotelId: string,
-    from: Date,
-    to: Date,
-    bookingStatus: BookingStatus = BookingStatus.Booked,
-  ) {
-    this.customerId = customerId;
-    this.hotelId = hotelId;
-    this.from = from;
-    this.to = to;
-    this.bookingStatus = bookingStatus;
+  protected when(change: Change): void {
+    switch (change.constructor) {
+      case Events.BookingCreated:
+        const { occurredOn, ...props } = change;
+        this.assign(props);
+        break;
+    }
   }
 
   public static schedule({
@@ -35,6 +34,17 @@ export class Booking {
     from,
     to,
   }: ScheduleCommand): Booking {
-    return new Booking(customerId, hotelId, from, to);
+    const bookingId = randomUUID();
+    const booking = new Booking();
+    booking.apply(
+      new Events.BookingCreated({
+        bookingId: bookingId,
+        customerId,
+        hotelId,
+        from,
+        to,
+      }),
+    );
+    return booking;
   }
 }
