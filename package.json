@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "node --import tsx --test test/*.spec.ts",
+    "test": "node --import tsx --test test/**/*.spec.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
