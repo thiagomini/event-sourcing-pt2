@@ -13,7 +13,6 @@ export type ScheduleCommand = {
 };
 
 export class Booking extends Entity {
-  public readonly id: string;
   public readonly customerId: string;
   public readonly hotelId: string;
   public readonly bookingStatus: BookingStatus;
@@ -25,10 +24,10 @@ export class Booking extends Entity {
 
   constructor(bookingId: string) {
     super();
-    this.id = bookingId;
+    this.assign({ id: bookingId });
   }
 
-  protected when(change: Change): void {
+  public when(change: Change): void {
     match(change)
       .when(isEventOfType(BookingCreated), ({ occurredOn, ...props }) => {
         this.assign(props);
