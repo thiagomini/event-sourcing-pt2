@@ -1,7 +1,8 @@
+import { match } from 'ts-pattern';
 import { BookingStatus } from './booking.status';
 import { Change } from './change.interface';
 import { Entity } from './entity';
-import { Events } from './events';
+import { BookingCreated, BookingPaid, isEventOfType } from './events';
 import { randomUUID } from 'node:crypto';
 
 export type ScheduleCommand = {
@@ -28,24 +29,18 @@ export class Booking extends Entity {
   }
 
   protected when(change: Change): void {
-    switch (change.constructor) {
-      case Events.BookingCreated:
-        const { occurredOn, ...props } = change;
+    match(change)
+      .when(isEventOfType(BookingCreated), ({ occurredOn, ...props }) => {
         this.assign(props);
-        break;
-
-      case Events.BookingPaid:
-        this.assign({
-          paid: true,
-          paymentDate: (change as unknown as { paymentDate: Date }).paymentDate,
-        });
-        break;
-    }
+      })
+      .when(isEventOfType(BookingPaid), ({ paymentDate }) => {
+        this.assign({ paid: true, paymentDate });
+      });
   }
 
   public confirmPayment(paymentDate: Date): void {
     this.apply(
-      new Events.BookingPaid({
+      new BookingPaid({
         bookingId: this.id,
         paymentDate,
         occurredOn: new Date(),
@@ -62,7 +57,7 @@ export class Booking extends Entity {
     const bookingId = randomUUID();
     const booking = new Booking(bookingId);
     booking.apply(
-      new Events.BookingCreated({
+      new BookingCreated({
         bookingId,
         customerId,
         hotelId,
