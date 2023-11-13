@@ -22,6 +22,11 @@ export class Booking extends Entity {
   public readonly from: Date;
   public readonly to: Date;
 
+  constructor(bookingId: string) {
+    super();
+    this.id = bookingId;
+  }
+
   protected when(change: Change): void {
     switch (change.constructor) {
       case Events.BookingCreated:
@@ -55,10 +60,10 @@ export class Booking extends Entity {
     to,
   }: ScheduleCommand): Booking {
     const bookingId = randomUUID();
-    const booking = new Booking();
+    const booking = new Booking(bookingId);
     booking.apply(
       new Events.BookingCreated({
-        bookingId: bookingId,
+        bookingId,
         customerId,
         hotelId,
         from,
