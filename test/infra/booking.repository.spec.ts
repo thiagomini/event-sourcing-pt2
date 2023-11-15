@@ -1,12 +1,12 @@
 import { describe, test } from 'node:test';
 import { Booking } from '../../src/domain/booking.entity';
 import assert from 'node:assert';
-import { MemoryAggregateStore } from '../../src/infra/memory-aggregate-store';
+import { BookingRepository } from '../../src/infra/booking.repository';
 
-describe('MemoryAggregateStore', () => {
+describe('BookingRepository', () => {
   test('saves an entity', async () => {
     // Arrange
-    const memoryAggregateStore = new MemoryAggregateStore();
+    const bookingRepository = new BookingRepository();
     const props = {
       customerId: 'customer-1',
       hotelId: 'hotel-1',
@@ -16,10 +16,10 @@ describe('MemoryAggregateStore', () => {
     const aBooking = Booking.schedule(props);
 
     // Act
-    await memoryAggregateStore.store(aBooking);
+    await bookingRepository.store(aBooking);
 
     // Assert
-    const savedBooking = await memoryAggregateStore.load(aBooking.id);
+    const savedBooking = await bookingRepository.load(aBooking.id);
     assert.equal(savedBooking.id, aBooking.id);
     assert.equal(savedBooking.customerId, aBooking.customerId);
     assert.equal(savedBooking.hotelId, aBooking.hotelId);

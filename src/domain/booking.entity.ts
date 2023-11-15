@@ -23,8 +23,7 @@ export class Booking extends Entity {
   public readonly to: Date;
 
   constructor(bookingId: string) {
-    super();
-    this.assign({ id: bookingId });
+    super(bookingId);
   }
 
   public when(change: Change): void {

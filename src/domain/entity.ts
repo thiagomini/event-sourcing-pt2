@@ -3,7 +3,8 @@ import { Change } from './change.interface';
 export abstract class Entity {
   public readonly changes: ReadonlyArray<Change> = [];
   public readonly version: number = -1;
-  public readonly id: string;
+
+  constructor(public readonly id: string) {}
 
   protected apply(change: Change): void {
     (this.changes as Change[]).push(change);
