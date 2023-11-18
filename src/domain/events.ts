@@ -1,6 +1,6 @@
 import { Class } from '../common/class.type';
 import { BookingStatus } from './booking.status';
-import { Change } from './change.interface';
+import { Change } from './interfaces/change.interface';
 
 export class BookingCreated implements Change {
   constructor(props: {

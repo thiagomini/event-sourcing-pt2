@@ -1,6 +1,6 @@
 import { Class } from '../common/class.type';
-import { AggregateStore } from '../domain/aggregate-store.interface';
-import { Change } from '../domain/change.interface';
+import { AggregateStore } from '../domain/interfaces/aggregate-store.interface';
+import { Change } from '../domain/interfaces/change.interface';
 import { Entity } from '../domain/entity';
 
 export function MemoryAggregateStore<T extends Entity>(Entity: Class<T>) {

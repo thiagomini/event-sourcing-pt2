@@ -1,6 +1,6 @@
 import { match } from 'ts-pattern';
 import { BookingStatus } from './booking.status';
-import { Change } from './change.interface';
+import { Change } from './interfaces/change.interface';
 import { Entity } from './entity';
 import { BookingCreated, BookingPaid, isEventOfType } from './events';
 import { randomUUID } from 'node:crypto';
