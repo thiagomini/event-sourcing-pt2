@@ -40,4 +40,29 @@ describe('MemoryEventStore', () => {
     assert.ok(eventStream);
     assert.equal(eventStream.length, 0);
   });
+
+  test.only('loads an event stream skipping many events', async () => {
+    // Arrange
+    const eventStore = new MemoryEventStore();
+    const streamId = 'stream-id';
+    const [firstEvent, secondEvent, thirdEvent] = [
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+    ];
+
+    await eventStore.appendToStream(streamId, 0, firstEvent);
+    await eventStore.appendToStream(streamId, 1, secondEvent);
+    await eventStore.appendToStream(streamId, 2, thirdEvent);
+
+    // Act
+    const eventStream = await eventStore.loadEventStream(streamId, {
+      skipEvents: 2,
+    });
+
+    // Assert
+    assert.ok(eventStream);
+    assert.equal(eventStream.length, 1);
+    assert.equal(eventStream.eventAt(0), thirdEvent);
+  });
 });

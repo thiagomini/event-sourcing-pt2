@@ -17,14 +17,23 @@ export class MemoryEventStore implements EventStore {
       maxCount?: number;
     },
   ): Promise<EventStream | undefined> {
-    return this.eventStreams.get(id)?.skipEvents(options?.skipEvents ?? 0);
+    const skip = options?.skipEvents;
+    return this.eventStreams.get(id)?.skipEvents(skip);
   }
   async appendToStream(
     id: string,
     expectedVersion: number,
     ...events: Change[]
   ): Promise<void> {
-    const newEventStream = new EventStream(expectedVersion, events);
-    this.eventStreams.set(id, newEventStream);
+    const existingEventStream = this.eventStreams.get(id);
+    if (existingEventStream) {
+      this.eventStreams.set(
+        id,
+        existingEventStream.concat(expectedVersion, events),
+      );
+    } else {
+      this.eventStreams.set(id, new EventStream(expectedVersion, events));
+    }
+  
   }
 }

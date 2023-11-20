@@ -17,7 +17,11 @@ export class EventStream {
     return this.events[index];
   }
 
-  public skipEvents(count: number): EventStream {
+  public skipEvents(count?: number): EventStream {
     return new EventStream(this.version, this.events.slice(count));
+  }
+
+  public concat(newVersion: number, events: Change[]): EventStream {
+    return new EventStream(newVersion, this.events.concat(events));
   }
 }
