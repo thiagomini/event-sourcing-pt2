@@ -41,7 +41,7 @@ describe('MemoryEventStore', () => {
     assert.equal(eventStream.length, 0);
   });
 
-  test.only('loads an event stream skipping many events', async () => {
+  test('loads an event stream skipping many events', async () => {
     // Arrange
     const eventStore = new MemoryEventStore();
     const streamId = 'stream-id';
