@@ -21,6 +21,10 @@ export class EventStream {
     return new EventStream(this.version, this.events.slice(count));
   }
 
+  public limitEvents(count?: number): EventStream {
+    return new EventStream(this.version, this.events.slice(0, count));
+  }
+
   public concat(newVersion: number, events: Change[]): EventStream {
     return new EventStream(newVersion, this.events.concat(events));
   }

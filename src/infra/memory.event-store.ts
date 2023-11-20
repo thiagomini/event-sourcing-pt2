@@ -18,7 +18,10 @@ export class MemoryEventStore implements EventStore {
     },
   ): Promise<EventStream | undefined> {
     const skip = options?.skipEvents;
-    return this.eventStreams.get(id)?.skipEvents(skip);
+    return this.eventStreams
+      .get(id)
+      ?.skipEvents(skip)
+      .limitEvents(options?.maxCount);
   }
   async appendToStream(
     id: string,
