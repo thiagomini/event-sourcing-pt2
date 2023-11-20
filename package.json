@@ -15,7 +15,8 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "test": "node --import tsx --test test/**/*.spec.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "ts-pattern": "^5.0.5",

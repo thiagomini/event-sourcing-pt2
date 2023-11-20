@@ -13,6 +13,6 @@ export interface EventStore {
   appendToStream(
     id: string,
     expectedVersion: number,
-    ...events: Change[]
+    event: Change,
   ): Promise<void>;
 }

@@ -23,17 +23,16 @@ export class MemoryEventStore implements EventStore {
   async appendToStream(
     id: string,
     expectedVersion: number,
-    ...events: Change[]
+    events: Change,
   ): Promise<void> {
     const existingEventStream = this.eventStreams.get(id);
     if (existingEventStream) {
       this.eventStreams.set(
         id,
-        existingEventStream.concat(expectedVersion, events),
+        existingEventStream.concat(expectedVersion, [events]),
       );
     } else {
-      this.eventStreams.set(id, new EventStream(expectedVersion, events));
+      this.eventStreams.set(id, new EventStream(expectedVersion, [events]));
     }
-  
   }
 }
