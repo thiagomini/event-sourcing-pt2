@@ -8,16 +8,16 @@ export class MemoryEventStore implements EventStore {
   loadEventStream(id: string): Promise<EventStream>;
   loadEventStream(
     id: string,
-    options: { skipEvents: number; maxCount: number },
+    options: { skipEvents?: number; maxCount?: number },
   ): Promise<EventStream>;
   async loadEventStream(
     id: string,
     options?: {
-      skipEvents: number;
-      maxCount: number;
+      skipEvents?: number;
+      maxCount?: number;
     },
   ): Promise<EventStream | undefined> {
-    return this.eventStreams.get(id);
+    return this.eventStreams.get(id)?.skipEvents(options?.skipEvents ?? 0);
   }
   async appendToStream(
     id: string,

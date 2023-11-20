@@ -16,4 +16,8 @@ export class EventStream {
   public eventAt(index: number): Change {
     return this.events[index];
   }
+
+  public skipEvents(count: number): EventStream {
+    return new EventStream(this.version, this.events.slice(count));
+  }
 }

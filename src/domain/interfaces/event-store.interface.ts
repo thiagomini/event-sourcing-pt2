@@ -6,8 +6,8 @@ export interface EventStore {
   loadEventStream(
     id: string,
     options: {
-      skipEvents: number;
-      maxCount: number;
+      skipEvents?: number;
+      maxCount?: number;
     },
   ): Promise<EventStream | undefined>;
   appendToStream(
