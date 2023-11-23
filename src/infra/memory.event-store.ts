@@ -29,6 +29,11 @@ export class MemoryEventStore implements EventStore {
     events: Change,
   ): Promise<void> {
     const existingEventStream = this.eventStreams.get(id);
+    if (existingEventStream && existingEventStream.version >= expectedVersion) {
+      throw new Error(
+        `expected version ${expectedVersion} but latest was ${existingEventStream.version}`,
+      );
+    }
     if (existingEventStream) {
       this.eventStreams.set(
         id,
