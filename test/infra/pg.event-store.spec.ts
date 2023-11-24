@@ -53,6 +53,23 @@ describe('PgEventStore', () => {
     assert.ok(eventStream);
     assert.equal(eventStream.length, 0);
   });
+
+  test('throws an error when expected version is lower than latest', async () => {
+    // Arrange
+    const newEvent = new TestableEvent(new Date());
+    const eventStore = createPgEventStore();
+    const streamId = randomUUID();
+    await eventStore.appendToStream(streamId, 1, newEvent);
+
+    // Act
+    const promise = eventStore.appendToStream(streamId, 0, newEvent);
+
+    // Assert
+    await assert.rejects(
+      async () => await promise,
+      new Error('expected version 0 but latest was 1'),
+    );
+  });
 });
 
 function createPgEventStore() {
