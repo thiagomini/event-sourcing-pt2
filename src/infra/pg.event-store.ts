@@ -12,8 +12,11 @@ export class PgEventStore implements EventStore {
     options: { skipEvents?: number | undefined; maxCount?: number | undefined },
   ): Promise<EventStream | undefined>;
   async loadEventStream(
-    id: unknown,
-    options?: unknown,
+    id: string,
+    options?: {
+      skipEvents?: number | undefined;
+      maxCount?: number | undefined;
+    },
   ): Promise<EventStream | undefined> {
     const query = 'SELECT * FROM streams WHERE id = $1';
     const result = await this.pgClient.query<{
@@ -34,7 +37,9 @@ export class PgEventStore implements EventStore {
       });
     }
     const lastVersion = rows[rows.length - 1].version;
-    return new EventStream(lastVersion, streamOfEvents);
+    return new EventStream(lastVersion, streamOfEvents).skipEvents(
+      options?.skipEvents,
+    );
   }
   async appendToStream(
     id: string,

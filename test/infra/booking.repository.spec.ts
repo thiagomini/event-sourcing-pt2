@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test';
 import { Booking } from '../../src/domain/booking.entity';
-import assert from 'node:assert';
+import assert from 'node:assert/strict';
 import { BookingRepository } from '../../src/infra/booking.repository';
 
 describe('BookingRepository', () => {
