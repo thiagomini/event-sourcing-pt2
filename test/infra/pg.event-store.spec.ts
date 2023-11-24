@@ -95,6 +95,35 @@ describe('PgEventStore', () => {
     assert.equal(eventStream.length, 1);
     assert.deepEqual(eventStream.eventAt(0).occurredOn, thirdEvent.occurredOn);
   });
+
+  test('loads an event stream skipping and limiting the events count', async () => {
+    // Arrange
+    const eventStore = createPgEventStore();
+    const streamId = randomUUID();
+    const [firstEvent, secondEvent, thirdEvent, fourth] = [
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+    ];
+
+    await eventStore.appendToStream(streamId, 0, firstEvent);
+    await eventStore.appendToStream(streamId, 1, secondEvent);
+    await eventStore.appendToStream(streamId, 2, thirdEvent);
+    await eventStore.appendToStream(streamId, 3, fourth);
+
+    // Act
+    const eventStream = await eventStore.loadEventStream(streamId, {
+      skipEvents: 1,
+      maxCount: 2,
+    });
+
+    // Assert
+    assert.ok(eventStream);
+    assert.equal(eventStream.length, 2);
+    assert.deepEqual(eventStream.eventAt(0).occurredOn, secondEvent.occurredOn);
+    assert.deepEqual(eventStream.eventAt(1).occurredOn, thirdEvent.occurredOn);
+  });
 });
 
 function createPgEventStore() {

@@ -37,9 +37,9 @@ export class PgEventStore implements EventStore {
       });
     }
     const lastVersion = rows[rows.length - 1].version;
-    return new EventStream(lastVersion, streamOfEvents).skipEvents(
-      options?.skipEvents,
-    );
+    return new EventStream(lastVersion, streamOfEvents)
+      .skipEvents(options?.skipEvents)
+      .limitEvents(options?.maxCount);
   }
   async appendToStream(
     id: string,
