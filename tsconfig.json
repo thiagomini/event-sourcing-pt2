@@ -8,9 +8,11 @@
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
     "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["node"]
   },
   "include": ["src/**/*", "test/**/*.ts"],
   "exclude": ["node_modules"]

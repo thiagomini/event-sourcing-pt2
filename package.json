@@ -19,10 +19,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@types/pg": "^8.10.9",
+    "pg": "^8.11.3",
     "ts-pattern": "^5.0.5",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "tsx": "^4.1.1"

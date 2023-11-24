@@ -1,11 +1,9 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
-import { Change } from '@/domain/interfaces/change.interface';
 import { MemoryEventStore } from '@/infra/memory.event-store';
+import { TestableEvent } from './testable.event';
 
-class TestableEvent implements Change {
-  constructor(public readonly occurredOn: Date) {}
-}
+
 
 describe('MemoryEventStore', () => {
   test('saves an event', async () => {
