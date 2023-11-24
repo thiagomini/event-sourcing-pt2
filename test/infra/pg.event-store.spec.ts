@@ -25,7 +25,7 @@ describe('PgEventStore', () => {
     // Arrange
     const pgEventStore = createPgEventStore();
     const newEvent = new TestableEvent(new Date());
-    const streamId = 'stream-id';
+    const streamId = randomUUID();
 
     // Act
     await pgEventStore.appendToStream(streamId, 0, newEvent);
@@ -69,6 +69,31 @@ describe('PgEventStore', () => {
       async () => await promise,
       new Error('expected version 0 but latest was 1'),
     );
+  });
+
+  test('loads an event stream skipping many events', async () => {
+    // Arrange
+    const eventStore = createPgEventStore();
+    const streamId = randomUUID();
+    const [firstEvent, secondEvent, thirdEvent] = [
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+      new TestableEvent(new Date()),
+    ];
+
+    await eventStore.appendToStream(streamId, 0, firstEvent);
+    await eventStore.appendToStream(streamId, 1, secondEvent);
+    await eventStore.appendToStream(streamId, 2, thirdEvent);
+
+    // Act
+    const eventStream = await eventStore.loadEventStream(streamId, {
+      skipEvents: 2,
+    });
+
+    // Assert
+    assert.ok(eventStream);
+    assert.equal(eventStream.length, 1);
+    assert.deepEqual(eventStream.eventAt(0).occurredOn, thirdEvent.occurredOn);
   });
 });
 

@@ -18,7 +18,7 @@ export class PgEventStore implements EventStore {
       maxCount?: number | undefined;
     },
   ): Promise<EventStream | undefined> {
-    const query = 'SELECT * FROM streams WHERE id = $1';
+    const query = 'SELECT * FROM streams WHERE stream_id = $1';
     const result = await this.pgClient.query<{
       version: number;
       event: Change;
@@ -46,7 +46,7 @@ export class PgEventStore implements EventStore {
     expectedVersion: number,
     event: Change,
   ): Promise<void> {
-    const queryForExistingStream = 'SELECT * FROM streams WHERE id = $1';
+    const queryForExistingStream = 'SELECT * FROM streams WHERE stream_id = $1';
     const existingStream = await this.pgClient.query(queryForExistingStream, [
       id,
     ]);
@@ -59,7 +59,8 @@ export class PgEventStore implements EventStore {
       }
     }
 
-    const query = 'INSERT INTO streams(id, version, event) VALUES($1, $2, $3)';
+    const query =
+      'INSERT INTO streams(stream_id, version, event) VALUES($1, $2, $3)';
     await this.pgClient.query(query, [id, expectedVersion, event]);
   }
 }
